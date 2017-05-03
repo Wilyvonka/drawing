@@ -7,9 +7,12 @@ var FRInput;
 var FR = undefined;
 var alphaInput;
 var alphaCol;
+var proportion;
+var proportionInput;
+var reset;
 
 function setup() {
-    createCanvas(800, 800);
+    createCanvas(800, 600);
     background(51);
     drawingDots.push(new DrawingDot);
     checkbox = createCheckbox('Toggle run', false);
@@ -19,6 +22,9 @@ function setup() {
     FRInput = createInput('60');
     FRInput.input(FRChanged);
     alphaInput = createSlider(0, 255, 255, 5);
+    porportionInput = createSlider(0, 1, 0.5, 0.01);
+    reset = createButton('reset');
+    reset.mousePressed(resetBG);
     /* for (var i = 0; i < 3; i++) {
          baseDots.push(new BaseDot);
      }*/
@@ -31,11 +37,13 @@ function setup() {
 }
 
 function draw() {
+
     if (frameCount < 5) {
         background(51)
     }
 
     alphaCol = alphaInput.value();
+    proportion = porportionInput.value();
 
 
     for (var s = 0; s < UPF; s++)
@@ -62,7 +70,7 @@ function DrawingDot() {
         var r = floor(random(0, baseDots.length));
         this.base = baseDots[r];
         this.vel = p5.Vector.sub(this.base.pos, this.pos)
-        this.vel.mult(0.5)
+        this.vel.mult(proportion)
         this.pos.add(this.vel);
     }
     this.render = function () {
@@ -87,7 +95,7 @@ function BaseDot(x, y) {
 }
 
 function mousePressed() {
-    if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < width) {
+    if (mouseX > 0 && mouseX < width && mouseY > 0 && mouseY < height) {
         baseDots.push(new BaseDot(mouseX, mouseY));
         for (var i = 0; i < baseDots.length; i++) {
             baseDots[i].render();
@@ -95,8 +103,12 @@ function mousePressed() {
     }
 }
 
+function resetBG() {
+    background(51);
+}
+
 function toggleLoop() {
-    if (this.checked) {
+    if (this.checked()) {
         loop();
     } else {
         noLoop();
