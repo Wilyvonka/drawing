@@ -31,7 +31,7 @@ function setup() {
     /* baseDots.push(new BaseDot(width / 2, 150))
      baseDots.push(new BaseDot(width / 8, 650))
      baseDots.push(new BaseDot(width - width / 8, 650))*/
-    frameRate(FR);
+    setFrameRate(FR);
     noLoop();
     UPF = 1;
 }
